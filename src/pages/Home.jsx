@@ -76,11 +76,49 @@ GROUP BY r.query_id, e.score`
   )
 }
 
+const WHY_CARDS = [
+  {
+    icon: '🔍',
+    title: 'SQL over AI telemetry',
+    body: 'Query LLM responses, evals, agent traces, and RAG chunks with standard SQL — no new query language to learn.',
+  },
+  {
+    icon: '⚡',
+    title: 'Zero configuration',
+    body: "DuckDB in-memory + SQLite persistence. pip install anysql and you're querying in 30 seconds.",
+  },
+  {
+    icon: '🔗',
+    title: 'Cross-layer JOINs',
+    body: 'The only tool that puts LLM cost, eval scores, agent traces, and RAG quality in the same queryable store.',
+  },
+]
+
+function WhySection() {
+  return (
+    <section className="max-w-5xl mx-auto px-6 py-16">
+      <h2 className="text-3xl font-semibold text-text-primary mb-10 text-center">
+        Why anySQL?
+      </h2>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {WHY_CARDS.map(({ icon, title, body }) => (
+          <div key={title} className="bg-surface border border-subtle rounded-xl p-6 hover:border-accent-blue transition-colors duration-200">
+            <div className="text-3xl mb-4" aria-hidden="true">{icon}</div>
+            <h3 className="text-lg font-semibold text-text-primary mb-2">{title}</h3>
+            <p className="text-text-muted text-sm leading-relaxed">{body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 export default function Home() {
   return (
     <div>
       <Hero />
       <JoinSection />
+      <WhySection />
     </div>
   )
 }
