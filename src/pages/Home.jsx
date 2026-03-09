@@ -169,6 +169,73 @@ function UseCasesSection() {
   )
 }
 
+function QuickStartSection() {
+  const steps = [
+    {
+      label: '1. Install',
+      code: 'pip install anysql',
+    },
+    {
+      label: '2. Wrap your client',
+      code: `from anysql.adapters.openai import WrappedOpenAI
+
+client = WrappedOpenAI(db_path="anysql.db")
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "Hello"}]
+)`,
+    },
+    {
+      label: '3. Query',
+      code: `db.query("""
+  SELECT model, AVG(cost_usd) as avg_cost, AVG(score) as avg_score
+  FROM llm_responses r
+  JOIN eval_results e ON r.response_id = e.response_id
+  GROUP BY model ORDER BY avg_score DESC
+""")`,
+    },
+  ]
+
+  return (
+    <section className="max-w-5xl mx-auto px-6 py-16">
+      <h2 className="text-3xl font-semibold text-text-primary mb-10 text-center">
+        Up and running in 3 steps.
+      </h2>
+      <div className="space-y-4">
+        {steps.map(({ label, code }) => (
+          <div key={label} className="bg-surface border border-subtle rounded-xl p-6">
+            <p className="text-sm font-semibold text-accent-cyan mb-3">{label}</p>
+            <pre className="bg-space rounded-lg p-4 overflow-x-auto text-sm">
+              <code className="text-text-primary">{code}</code>
+            </pre>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function GitHubCTA() {
+  return (
+    <section className="max-w-5xl mx-auto px-6 py-16">
+      <div className="bg-surface border border-subtle rounded-xl p-10 text-center glow-blue">
+        <h2 className="text-2xl font-semibold text-text-primary mb-4">
+          anySQL is open source.
+        </h2>
+        <p className="text-text-muted mb-6">Apache 2.0. No lock-in. Contributions welcome.</p>
+        <a
+          href="https://github.com/anysql/anysql"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-accent-blue text-space font-semibold text-sm hover:opacity-90 transition-opacity duration-200"
+        >
+          Star us on GitHub ↗
+        </a>
+      </div>
+    </section>
+  )
+}
+
 export default function Home() {
   return (
     <div>
@@ -176,6 +243,8 @@ export default function Home() {
       <JoinSection />
       <WhySection />
       <UseCasesSection />
+      <QuickStartSection />
+      <GitHubCTA />
     </div>
   )
 }
