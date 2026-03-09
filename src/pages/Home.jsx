@@ -47,10 +47,40 @@ function Hero() {
   )
 }
 
+function JoinSection() {
+  const sql = `SELECT r.query_id,
+       MAX(r.similarity_score) AS retrieval_quality,
+       e.score                 AS answer_quality
+FROM rag.chunks r
+JOIN eval.results e ON r.query_id = e.query_id
+GROUP BY r.query_id, e.score`
+
+  return (
+    <section className="max-w-5xl mx-auto px-6 py-16">
+      <div className="bg-surface border border-subtle rounded-xl p-8">
+        <h2 className="text-2xl font-semibold text-text-primary mb-3">
+          The cross-layer JOIN nobody has built.
+        </h2>
+        <p className="text-text-muted mb-6">
+          Find out if your RAG pipeline is failing at retrieval or generation — with one query.
+        </p>
+        <pre className="bg-space rounded-lg p-6 overflow-x-auto text-sm leading-relaxed">
+          <code className="text-accent-cyan">{sql}</code>
+        </pre>
+        <p className="text-xs text-text-muted mt-4">
+          This query joins <span className="text-text-primary font-mono">rag.chunks</span> and{' '}
+          <span className="text-text-primary font-mono">eval.results</span> — two tables no existing tool puts in the same queryable store.
+        </p>
+      </div>
+    </section>
+  )
+}
+
 export default function Home() {
   return (
     <div>
       <Hero />
+      <JoinSection />
     </div>
   )
 }
