@@ -1,3 +1,124 @@
+function Section({ title, children }) {
+  return (
+    <section className="mb-12">
+      <h2 className="text-2xl font-semibold text-text-primary mb-4 pb-2 border-b border-subtle">{title}</h2>
+      {children}
+    </section>
+  )
+}
+
+function CodeBlock({ code }) {
+  return (
+    <pre className="bg-space border border-subtle rounded-lg p-5 overflow-x-auto text-sm leading-relaxed my-4">
+      <code className="text-text-primary">{code}</code>
+    </pre>
+  )
+}
+
 export default function Docs() {
-  return <div className="max-w-5xl mx-auto px-6 py-20"><p className="text-text-muted">Docs — coming soon</p></div>
+  return (
+    <div className="max-w-3xl mx-auto px-6 py-16">
+      <h1 className="text-4xl font-bold text-text-primary mb-4">Documentation</h1>
+      <p className="text-text-muted mb-12 text-lg">Get started with anySQL in minutes.</p>
+
+      <Section title="Installation">
+        <CodeBlock code="pip install anysql" />
+        <p className="text-text-muted text-sm">Optional extras:</p>
+        <CodeBlock code={`pip install anysql[openai]      # OpenAI adapter
+pip install anysql[anthropic]   # Claude adapter
+pip install anysql[langchain]   # LangChain tracer
+pip install anysql[all]         # Everything`} />
+      </Section>
+
+      <Section title="Architecture">
+        <p className="text-text-muted mb-4 leading-relaxed">
+          anySQL wraps your existing AI clients and normalizes their outputs into 6 canonical PyArrow tables.
+          Data is stored in-memory with DuckDB for fast SQL queries and persisted to SQLite across sessions.
+        </p>
+        <CodeBlock code={`User Code (Python)
+    │
+    ├── @anysql.context(feature="x")     ← context.py
+    ├── WrappedOpenAI / WrappedClaude    ← adapters/
+    ├── AgentTracer (LangChain)          ← tracers/agent.py
+    └── RAGTracer.after_retrieval()      ← tracers/rag.py
+              │
+              ▼
+    AnySQL.insert() ──→ SQLite  (persistence)
+    AnySQL.query()  ──→ DuckDB  (in-memory SQL over Arrow tables)
+              │
+              ▼
+    6 Canonical Tables
+    ├── llm.responses
+    ├── eval.results
+    ├── pipeline.runs
+    ├── agent.tool_calls
+    ├── agent.trace
+    └── rag.chunks`} />
+      </Section>
+
+      <Section title="Adapters">
+        <p className="text-text-muted mb-4">Drop-in wrappers that auto-capture telemetry from your LLM clients.</p>
+        <CodeBlock code={`# OpenAI
+from anysql.adapters.openai import WrappedOpenAI
+client = WrappedOpenAI(db_path="anysql.db")
+
+# Anthropic / Claude
+from anysql.adapters.claude import WrappedClaude
+client = WrappedClaude(db_path="anysql.db")
+
+# Generic (any dict/JSON response)
+from anysql.adapters.generic import GenericAdapter
+adapter = GenericAdapter(db_path="anysql.db")
+adapter.record(response_dict)`} />
+      </Section>
+
+      <Section title="Tracers">
+        <p className="text-text-muted mb-4">Instrument agent and RAG pipelines for full trace capture.</p>
+        <CodeBlock code={`# LangChain agent tracer
+from anysql.tracers.agent import AgentTracer
+tracer = AgentTracer(db_path="anysql.db")
+agent.run(prompt, callbacks=[tracer])
+
+# RAG tracer
+from anysql.tracers.rag import RAGTracer
+tracer = RAGTracer(db_path="anysql.db")
+chunks = retriever.retrieve(query)
+tracer.after_retrieval(query_id, chunks)`} />
+      </Section>
+
+      <Section title="Context Decorator">
+        <p className="text-text-muted mb-4">Tag all telemetry within a code block with feature flags or segments.</p>
+        <CodeBlock code={`import anysql
+
+with anysql.context(feature="new-prompt-v2", segment="enterprise"):
+    response = client.chat.completions.create(...)
+    # All calls inside are tagged with feature="new-prompt-v2"`} />
+      </Section>
+
+      <Section title="Running Queries">
+        <CodeBlock code={`from anysql import AnySQL
+
+db = AnySQL(db_path="anysql.db")
+
+# Any SQL — table names use underscores
+df = db.query("""
+  SELECT model,
+         AVG(cost_usd)   AS avg_cost,
+         AVG(score)      AS avg_score
+  FROM llm_responses r
+  JOIN eval_results e ON r.response_id = e.response_id
+  GROUP BY model
+  ORDER BY avg_score DESC
+""")`} />
+        <p className="text-text-muted text-sm">
+          Table names in SQL use underscores: <code className="text-text-primary font-mono">llm_responses</code>,{' '}
+          <code className="text-text-primary font-mono">eval_results</code>,{' '}
+          <code className="text-text-primary font-mono">pipeline_runs</code>,{' '}
+          <code className="text-text-primary font-mono">agent_tool_calls</code>,{' '}
+          <code className="text-text-primary font-mono">agent_trace</code>,{' '}
+          <code className="text-text-primary font-mono">rag_chunks</code>.
+        </p>
+      </Section>
+    </div>
+  )
 }
