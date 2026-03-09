@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .glow-cyan { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+  .glow-blue { box-shadow: 0 0 20px rgba(79, 142, 247, 0.3); }
+}
+
+body {
+  @apply bg-space text-text-primary;
+}
