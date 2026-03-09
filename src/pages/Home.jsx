@@ -113,12 +113,69 @@ function WhySection() {
   )
 }
 
+const USE_CASES = [
+  {
+    id: 'UC1',
+    title: 'LLM Cost Analysis',
+    body: "AVG(cost_usd) by model, date, and task type. Know exactly what you're spending.",
+    query: "SELECT model, AVG(cost_usd) as avg_cost\nFROM llm_responses\nGROUP BY model\nORDER BY avg_cost DESC",
+  },
+  {
+    id: 'UC2',
+    title: 'Prompt Regression',
+    body: "Catch score drops across prompt versions before they hit production.",
+    query: "SELECT prompt_version, AVG(score) as avg_score\nFROM eval_results\nGROUP BY prompt_version\nORDER BY prompt_version",
+  },
+  {
+    id: 'UC3',
+    title: 'A/B Feature Testing',
+    body: 'Compare pipeline performance across feature flags with SQL GROUP BY.',
+    query: "SELECT feature_flag, AVG(total_cost_usd)\nFROM pipeline_runs\nGROUP BY feature_flag",
+  },
+  {
+    id: 'UC4',
+    title: 'Agent Tracing',
+    body: 'Query every tool call, step order, error, and human override across sessions.',
+    query: "SELECT tool_name, COUNT(*), AVG(latency_ms)\nFROM agent_tool_calls\nGROUP BY tool_name",
+  },
+  {
+    id: 'UC5',
+    title: 'RAG Quality',
+    body: 'Join retrieval similarity scores with eval scores to pinpoint pipeline failures.',
+    query: "SELECT chunk_id, similarity_score, e.score\nFROM rag_chunks r\nJOIN eval_results e ON r.query_id = e.query_id",
+  },
+]
+
+function UseCasesSection() {
+  return (
+    <section className="max-w-5xl mx-auto px-6 py-16">
+      <h2 className="text-3xl font-semibold text-text-primary mb-3 text-center">
+        5 use cases, one install.
+      </h2>
+      <p className="text-text-muted text-center mb-10">Everything an AI engineer needs to debug and optimize their stack.</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {USE_CASES.map(({ id, title, body, query }) => (
+          <div key={id} className="bg-surface border border-subtle rounded-xl p-6">
+            <span className="text-xs font-mono text-accent-cyan mb-2 block">{id}</span>
+            <h3 className="text-base font-semibold text-text-primary mb-2">{title}</h3>
+            <p className="text-text-muted text-sm mb-4 leading-relaxed">{body}</p>
+            <pre className="bg-space rounded p-3 text-xs text-text-muted overflow-x-auto">
+              <code>{query}</code>
+            </pre>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 export default function Home() {
   return (
     <div>
       <Hero />
       <JoinSection />
       <WhySection />
+      <UseCasesSection />
     </div>
   )
 }
