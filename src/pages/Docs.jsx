@@ -22,12 +22,12 @@ export default function Docs() {
       <p className="text-text-muted mb-12 text-lg">Get started with anySQL in minutes.</p>
 
       <Section title="Installation">
-        <CodeBlock code="pip install anysql" />
+        <CodeBlock code="pip install anysql-sdk" />
         <p className="text-text-muted text-sm">Optional extras:</p>
-        <CodeBlock code={`pip install anysql[openai]      # OpenAI adapter
-pip install anysql[anthropic]   # Claude adapter
-pip install anysql[langchain]   # LangChain tracer
-pip install anysql[all]         # Everything`} />
+        <CodeBlock code={`pip install anysql-sdk[openai]      # OpenAI adapter
+pip install anysql-sdk[anthropic]   # Claude adapter
+pip install anysql-sdk[langchain]   # LangChain tracer
+pip install anysql-sdk[all]         # Everything`} />
       </Section>
 
       <Section title="Architecture">

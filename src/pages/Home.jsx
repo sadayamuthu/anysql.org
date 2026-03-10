@@ -33,8 +33,8 @@ function Hero() {
       </p>
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
         <div className="flex items-center gap-2 px-5 py-3 rounded-lg border border-accent-cyan glow-cyan bg-surface font-mono text-sm text-text-primary">
-          pip install anysql
-          <CopyButton text="pip install anysql" />
+          pip install anysql-sdk
+          <CopyButton text="pip install anysql-sdk" />
         </div>
         <Link
           to="/docs"
@@ -85,7 +85,7 @@ const WHY_CARDS = [
   {
     icon: '⚡',
     title: 'Zero configuration',
-    body: "DuckDB in-memory + SQLite persistence. pip install anysql and you're querying in 30 seconds.",
+    body: "DuckDB in-memory + SQLite persistence. pip install anysql-sdk and you're querying in 30 seconds.",
   },
   {
     icon: '🔗',
@@ -173,7 +173,7 @@ function QuickStartSection() {
   const steps = [
     {
       label: '1. Install',
-      code: 'pip install anysql',
+      code: 'pip install anysql-sdk',
     },
     {
       label: '2. Wrap your client',
