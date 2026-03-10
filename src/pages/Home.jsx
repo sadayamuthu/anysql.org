@@ -224,7 +224,7 @@ function GitHubCTA() {
         </h2>
         <p className="text-text-muted mb-6">Apache 2.0. No lock-in. Contributions welcome.</p>
         <a
-          href="https://github.com/anysql/anysql"
+          href="https://github.com/sadayamuthu/anysql"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-accent-blue text-space font-semibold text-sm hover:opacity-90 transition-opacity duration-200"

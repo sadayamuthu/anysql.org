@@ -29,7 +29,7 @@ export default function Navbar() {
             </Link>
           ))}
           <a
-            href="https://github.com/anysql/anysql"
+            href="https://github.com/sadayamuthu/anysql"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-text-muted hover:text-text-primary transition-colors duration-200"
