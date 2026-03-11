@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home    from './pages/Home'
 import Docs    from './pages/Docs'
+import Proxy   from './pages/Proxy'
 import Queries from './pages/Queries'
 import Schema  from './pages/Schema'
 import Cli     from './pages/Cli'
@@ -16,6 +17,7 @@ export default function App() {
           <Routes>
             <Route path="/"        element={<Home />} />
             <Route path="/docs"    element={<Docs />} />
+            <Route path="/proxy"   element={<Proxy />} />
             <Route path="/queries" element={<Queries />} />
             <Route path="/schema"  element={<Schema />} />
             <Route path="/cli"     element={<Cli />} />

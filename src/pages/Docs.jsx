@@ -38,7 +38,7 @@ pip install anysql-sdk[all]         # Everything`} />
         <CodeBlock code={`User Code (Python)
     │
     ├── @anysql.context(feature="x")     ← context.py
-    ├── WrappedOpenAI / WrappedClaude    ← adapters/
+    ├── anysql.openai() / anysql.claude()  ← adapters/
     ├── AgentTracer (LangChain)          ← tracers/agent.py
     └── RAGTracer.after_retrieval()      ← tracers/rag.py
               │
@@ -58,16 +58,27 @@ pip install anysql-sdk[all]         # Everything`} />
 
       <Section title="Adapters">
         <p className="text-text-muted mb-4">Drop-in wrappers that auto-capture telemetry from your LLM clients.</p>
-        <CodeBlock code={`# OpenAI
-from anysql.adapters.openai import WrappedOpenAI
-client = WrappedOpenAI(db_path="anysql.db")
+        <CodeBlock code={`import anysql
+
+db = anysql.init()
+
+# OpenAI — transparent proxy, all calls auto-logged
+client = anysql.openai(openai.OpenAI())
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "Hello"}]
+)
 
 # Anthropic / Claude
-from anysql.adapters.claude import WrappedClaude
-client = WrappedClaude(db_path="anysql.db")
+client = anysql.claude(anthropic.Anthropic())
+response = client.messages.create(
+    model="claude-sonnet-4-6",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "Hello"}]
+)
 
 # Generic (any dict/JSON response)
-from anysql.adapters.generic import GenericAdapter
+from anysql_sdk.adapters.generic import GenericAdapter
 adapter = GenericAdapter(db_path="anysql.db")
 adapter.record(response_dict)`} />
       </Section>
@@ -96,9 +107,9 @@ with anysql.context(feature="new-prompt-v2", segment="enterprise"):
       </Section>
 
       <Section title="Running Queries">
-        <CodeBlock code={`from anysql import AnySQL
+        <CodeBlock code={`import anysql
 
-db = AnySQL(db_path="anysql.db")
+db = anysql.init()
 
 # Any SQL — table names use underscores
 df = db.query("""

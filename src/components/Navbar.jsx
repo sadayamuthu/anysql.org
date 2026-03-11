@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 
 const NAV_LINKS = [
   { label: 'Docs',    to: '/docs' },
+  { label: 'Proxy',   to: '/proxy' },
   { label: 'Queries', to: '/queries' },
   { label: 'Schema',  to: '/schema' },
   { label: 'CLI',     to: '/cli' },
