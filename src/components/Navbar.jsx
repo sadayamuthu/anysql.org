@@ -1,15 +1,14 @@
 import { Link, useLocation } from 'react-router-dom'
 
-const NAV_LINKS = [
-  { label: 'Docs',    to: '/docs' },
-  { label: 'Proxy',   to: '/proxy' },
-  { label: 'Queries', to: '/queries' },
+const DOC_LINKS = [
   { label: 'Schema',  to: '/schema' },
+  { label: 'Queries', to: '/queries' },
   { label: 'CLI',     to: '/cli' },
 ]
 
 export default function Navbar() {
   const { pathname } = useLocation()
+  const docsActive = ['/schema', '/queries', '/cli'].includes(pathname)
 
   return (
     <nav className="sticky top-0 z-50 bg-surface border-b border-subtle">
@@ -18,7 +17,12 @@ export default function Navbar() {
           anySQL
         </Link>
         <div className="flex items-center gap-8">
-          {NAV_LINKS.map(({ label, to }) => (
+          {[
+            { label: 'SDK',    to: '/sdk' },
+            { label: 'Proxy',  to: '/proxy' },
+            { label: 'Server', to: '/server' },
+            { label: 'UI',     to: '/ui' },
+          ].map(({ label, to }) => (
             <Link
               key={to}
               to={to}
@@ -29,6 +33,36 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
+
+          {/* Docs dropdown */}
+          <div className="relative group">
+            <button
+              className={`text-sm transition-colors duration-200 flex items-center gap-1 ${
+                docsActive ? 'text-accent-cyan' : 'text-text-muted hover:text-text-primary'
+              }`}
+            >
+              Docs
+              <svg className="w-3 h-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div className="absolute right-0 top-full pt-2 hidden group-hover:block z-50">
+              <div className="bg-surface border border-subtle rounded-lg py-1 min-w-[120px] shadow-lg">
+                {DOC_LINKS.map(({ label, to }) => (
+                  <Link
+                    key={to}
+                    to={to}
+                    className={`block px-4 py-2 text-sm transition-colors duration-200 ${
+                      pathname === to ? 'text-accent-cyan' : 'text-text-muted hover:text-text-primary'
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <a
             href="https://github.com/sadayamuthu/anysql"
             target="_blank"
