@@ -37,7 +37,7 @@ function Hero() {
           <CopyButton text="pip install anysql-sdk" />
         </div>
         <Link
-          to="/docs"
+          to="/sdk"
           className="px-5 py-3 rounded-lg border border-subtle text-sm text-text-muted hover:text-text-primary hover:border-accent-blue transition-colors duration-200"
         >
           Read the Docs →
@@ -53,7 +53,7 @@ const PRODUCTS = [
     status: 'available',
     description: 'SQL analytics for LLM responses, agent traces, and RAG pipelines. Powered by DuckDB. Zero configuration.',
     install: 'pip install anysql-sdk',
-    to: '/docs',
+    to: '/sdk',
   },
   {
     name: 'anysql-proxy',
@@ -67,14 +67,14 @@ const PRODUCTS = [
     status: 'coming soon',
     description: 'REST API server for querying anySQL data over HTTP. Query your AI telemetry from any language or tool.',
     install: null,
-    to: null,
+    to: '/server',
   },
   {
     name: 'anysql-ui',
     status: 'coming soon',
     description: 'Monaco SQL editor and pre-built dashboards at localhost:4243. Query and visualize without leaving your machine.',
     install: null,
-    to: null,
+    to: '/ui',
   },
 ]
 
@@ -90,7 +90,9 @@ function ProductsSection() {
           const card = (
             <div
               className={`bg-surface border rounded-xl p-6 flex flex-col gap-3 transition-colors duration-200 ${
-                to ? 'border-subtle hover:border-accent-blue cursor-pointer' : 'border-subtle opacity-60'
+                status === 'available'
+                  ? 'border-subtle hover:border-accent-blue cursor-pointer'
+                  : 'border-subtle hover:border-accent-blue cursor-pointer opacity-60'
               }`}
             >
               <div className="flex items-center justify-between">
