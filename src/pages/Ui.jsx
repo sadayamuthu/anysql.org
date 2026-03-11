@@ -58,7 +58,7 @@ anysql-ui start   # opens http://localhost:4243`} />
           </li>
           <li className="flex gap-3">
             <span className="text-accent-cyan mt-0.5">→</span>
-            <span>Backed by anysql-server on port 4242/4243</span>
+            <span>Backed by anysql-server on port 4243</span>
           </li>
         </ul>
       </Section>

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 const FOOTER_LINKS = [
-  { label: 'Docs',    to: '/docs' },
+  { label: 'SDK',     to: '/sdk' },
   { label: 'Queries', to: '/queries' },
   { label: 'Schema',  to: '/schema' },
   { label: 'CLI',     to: '/cli' },
