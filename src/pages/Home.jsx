@@ -47,6 +47,87 @@ function Hero() {
   )
 }
 
+const PRODUCTS = [
+  {
+    name: 'anysql-sdk',
+    status: 'available',
+    description: 'SQL analytics for LLM responses, agent traces, and RAG pipelines. Powered by DuckDB. Zero configuration.',
+    install: 'pip install anysql-sdk',
+    to: '/docs',
+  },
+  {
+    name: 'anysql-proxy',
+    status: 'available',
+    description: 'Local IDE LLM proxy — intercept, log, and query your AI coding assistant usage from Cursor, Claude Code, Windsurf, and VS Code.',
+    install: 'pip install anysql-proxy',
+    to: '/proxy',
+  },
+  {
+    name: 'anysql-server',
+    status: 'coming soon',
+    description: 'REST API server for querying anySQL data over HTTP. Query your AI telemetry from any language or tool.',
+    install: null,
+    to: null,
+  },
+  {
+    name: 'anysql-ui',
+    status: 'coming soon',
+    description: 'Monaco SQL editor and pre-built dashboards at localhost:4243. Query and visualize without leaving your machine.',
+    install: null,
+    to: null,
+  },
+]
+
+function ProductsSection() {
+  return (
+    <section className="max-w-5xl mx-auto px-6 py-16">
+      <h2 className="text-3xl font-semibold text-text-primary mb-3 text-center">
+        The anySQL platform.
+      </h2>
+      <p className="text-text-muted text-center mb-10">Four packages. One local analytics layer for your AI stack.</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {PRODUCTS.map(({ name, status, description, install, to }) => {
+          const card = (
+            <div
+              className={`bg-surface border rounded-xl p-6 flex flex-col gap-3 transition-colors duration-200 ${
+                to ? 'border-subtle hover:border-accent-blue cursor-pointer' : 'border-subtle opacity-60'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-sm font-semibold text-text-primary">{name}</span>
+                <span className={`text-xs px-2 py-0.5 rounded-full border font-mono ${
+                  status === 'available'
+                    ? 'border-accent-cyan text-accent-cyan'
+                    : 'border-subtle text-text-muted'
+                }`}>
+                  {status}
+                </span>
+              </div>
+              <p className="text-text-muted text-sm leading-relaxed">{description}</p>
+              {install && (
+                <pre className="bg-space rounded-lg px-4 py-2 text-xs text-text-primary font-mono mt-auto">
+                  {install}
+                </pre>
+              )}
+              {!install && (
+                <p className="text-xs text-text-muted font-mono mt-auto">Coming soon</p>
+              )}
+            </div>
+          )
+
+          return to ? (
+            <Link key={name} to={to} className="no-underline">
+              {card}
+            </Link>
+          ) : (
+            <div key={name}>{card}</div>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
 function JoinSection() {
   const sql = `SELECT r.query_id,
        MAX(r.similarity_score) AS retrieval_quality,
@@ -177,13 +258,15 @@ function QuickStartSection() {
     },
     {
       label: '2. Wrap your client',
-      code: `from anysql.adapters.openai import WrappedOpenAI
+      code: `import anysql
 
-client = WrappedOpenAI(db_path="anysql.db")
-response = client.chat.completions.create(
-    model="gpt-4o",
-    messages=[{"role": "user", "content": "Hello"}]
-)`,
+db = anysql.init()
+
+# OpenAI
+client = anysql.openai(openai.OpenAI())
+
+# Anthropic
+client = anysql.claude(anthropic.Anthropic())`,
     },
     {
       label: '3. Query',
@@ -240,6 +323,7 @@ export default function Home() {
   return (
     <div>
       <Hero />
+      <ProductsSection />
       <JoinSection />
       <WhySection />
       <UseCasesSection />
