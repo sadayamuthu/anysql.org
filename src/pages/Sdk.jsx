@@ -15,11 +15,14 @@ function CodeBlock({ code }) {
   )
 }
 
-export default function Docs() {
+export default function Sdk() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
-      <h1 className="text-4xl font-bold text-text-primary mb-4">Documentation</h1>
-      <p className="text-text-muted mb-12 text-lg">Get started with anySQL in minutes.</p>
+      <div className="inline-block mb-4 px-3 py-1 rounded-full border border-accent-cyan text-xs text-accent-cyan font-mono">
+        available · v0.1.0
+      </div>
+      <h1 className="text-4xl font-bold text-text-primary mb-4">anysql-sdk</h1>
+      <p className="text-text-muted mb-12 text-lg">SQL analytics for LLM responses, agent traces, and RAG pipelines.</p>
 
       <Section title="Installation">
         <CodeBlock code="pip install anysql-sdk" />
