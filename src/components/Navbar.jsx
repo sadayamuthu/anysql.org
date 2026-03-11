@@ -37,6 +37,8 @@ export default function Navbar() {
           {/* Docs dropdown */}
           <div className="relative group">
             <button
+              aria-label="Documentation"
+              aria-haspopup="true"
               className={`text-sm transition-colors duration-200 flex items-center gap-1 ${
                 docsActive ? 'text-accent-cyan' : 'text-text-muted hover:text-text-primary'
               }`}
