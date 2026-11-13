@@ -1,19 +1,5 @@
-function Section({ title, children }) {
-  return (
-    <section className="mb-12">
-      <h2 className="text-2xl font-semibold text-text-primary mb-4 pb-2 border-b border-subtle">{title}</h2>
-      {children}
-    </section>
-  )
-}
-
-function CodeBlock({ code }) {
-  return (
-    <pre className="bg-space border border-subtle rounded-lg p-5 overflow-x-auto text-sm leading-relaxed my-4">
-      <code className="text-text-primary">{code}</code>
-    </pre>
-  )
-}
+import PackageLayout from '../components/PackageLayout'
+import { CodeBlock, Section } from '../components/ui'
 
 const CLI_COMMANDS = [
   { cmd: 'anysql-proxy start',         desc: 'Start the proxy on localhost:4242' },
@@ -28,22 +14,18 @@ const CLI_COMMANDS = [
 
 export default function Proxy() {
   return (
-    <div className="max-w-3xl mx-auto px-6 py-16">
-      <div className="inline-block mb-4 px-3 py-1 rounded-full border border-accent-cyan text-xs text-accent-cyan font-mono">
-        available · v0.1.0
-      </div>
-      <h1 className="text-4xl font-bold text-text-primary mb-4">anysql-proxy</h1>
-      <p className="text-text-muted mb-12 text-lg">
-        Local IDE LLM proxy — intercept, log, and query your AI coding assistant usage.
-      </p>
+    <PackageLayout
+      to="/proxy"
+      lede={<>Local IDE LLM proxy: intercept, log, and query your AI coding assistant usage.</>}
+    >
 
       <Section title="Install">
         <CodeBlock code="pip install anysql-proxy" />
       </Section>
 
       <Section title="How it works">
-        <p className="text-text-muted mb-4 leading-relaxed">
-          The proxy runs on <code className="text-text-primary font-mono">localhost:4242</code>. Configure your IDE to point its LLM base URL there. Every request is forwarded to the real provider with zero added latency — and logged non-blocking to <code className="text-text-primary font-mono">~/.anysql/ide.duckdb</code>.
+        <p className="text-ink-muted mb-4 leading-relaxed">
+          The proxy runs on <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">localhost:4242</code>. Configure your IDE to point its LLM base URL there. Every request is forwarded to the real provider with zero added latency — and logged non-blocking to <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">~/.anysql/ide.duckdb</code>.
         </p>
         <CodeBlock code={`IDE → POST http://localhost:4242/v1/chat/completions
           ↓
@@ -52,18 +34,18 @@ export default function Proxy() {
           ↓ forwards to api.openai.com or api.anthropic.com
           ↓ streams response back to IDE
 IDE receives tokens with zero added latency`} />
-        <p className="text-text-muted text-sm leading-relaxed">
+        <p className="text-ink-muted text-sm leading-relaxed">
           The proxy detects which IDE sent each request via User-Agent fingerprinting and extracts file path, language, and git branch from the prompt body — giving you queryable developer workflow context alongside LLM cost data.
         </p>
       </Section>
 
       <Section title="IDE Setup">
-        <p className="text-text-muted mb-4">Run the setup command for your IDE — it writes the config automatically:</p>
+        <p className="text-ink-muted mb-4">Run the setup command for your IDE — it writes the config automatically:</p>
         <CodeBlock code={`anysql-proxy setup cursor        # Cursor: override OpenAI base URL
 anysql-proxy setup claude-code   # Claude Code: appends to ~/.zshrc
 anysql-proxy setup windsurf      # Windsurf: custom API endpoint
 anysql-proxy setup vscode        # VS Code + Continue: config.json`} />
-        <p className="text-text-muted text-sm mb-4">Or configure manually:</p>
+        <p className="text-ink-muted text-sm mb-4">Or configure manually:</p>
         <div className="space-y-3">
           {[
             { ide: 'Cursor', setting: 'Settings → Override OpenAI Base URL', value: 'http://localhost:4242' },
@@ -71,10 +53,10 @@ anysql-proxy setup vscode        # VS Code + Continue: config.json`} />
             { ide: 'Windsurf', setting: 'Settings → Custom API Endpoint', value: 'http://localhost:4242' },
             { ide: 'VS Code (Continue)', setting: 'config.json', value: '"apiBase": "http://localhost:4242"' },
           ].map(({ ide, setting, value }) => (
-            <div key={ide} className="bg-surface border border-subtle rounded-lg p-4">
-              <p className="text-sm font-semibold text-text-primary mb-1">{ide}</p>
-              <p className="text-xs text-text-muted mb-2">{setting}</p>
-              <code className="text-xs text-accent-cyan font-mono">{value}</code>
+            <div key={ide} className="bg-card border border-rule rounded-sm p-4">
+              <p className="text-sm font-semibold text-ink mb-1">{ide}</p>
+              <p className="text-xs text-ink-muted mb-2">{setting}</p>
+              <code className="text-xs text-acc font-mono">{value}</code>
             </div>
           ))}
         </div>
@@ -84,18 +66,18 @@ anysql-proxy setup vscode        # VS Code + Continue: config.json`} />
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-subtle">
-                <th className="text-left text-text-muted font-medium pb-3 pr-6">Command</th>
-                <th className="text-left text-text-muted font-medium pb-3">Description</th>
+              <tr className="border-b border-rule">
+                <th className="text-left text-ink-muted font-medium pb-3 pr-6">Command</th>
+                <th className="text-left text-ink-muted font-medium pb-3">Description</th>
               </tr>
             </thead>
             <tbody>
               {CLI_COMMANDS.map(({ cmd, desc }) => (
-                <tr key={cmd} className="border-b border-subtle last:border-0">
+                <tr key={cmd} className="border-b border-rule last:border-0">
                   <td className="py-3 pr-6">
-                    <code className="text-accent-cyan font-mono text-xs">{cmd}</code>
+                    <code className="text-acc font-mono text-xs">{cmd}</code>
                   </td>
-                  <td className="py-3 text-text-muted">{desc}</td>
+                  <td className="py-3 text-ink-muted">{desc}</td>
                 </tr>
               ))}
             </tbody>
@@ -104,10 +86,10 @@ anysql-proxy setup vscode        # VS Code + Continue: config.json`} />
       </Section>
 
       <Section title="Schema">
-        <p className="text-text-muted mb-4">
-          Two tables written to <code className="text-text-primary font-mono">~/.anysql/ide.duckdb</code>:
+        <p className="text-ink-muted mb-4">
+          Two tables written to <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">~/.anysql/ide.duckdb</code>:
         </p>
-        <p className="text-sm font-semibold text-text-primary mb-2">llm_responses</p>
+        <p className="text-sm font-semibold text-ink mb-2">llm_responses</p>
         <CodeBlock code={`response_id       VARCHAR   -- unique request ID
 model             VARCHAR   -- e.g. gpt-4o, claude-sonnet-4-6
 prompt_tokens     INTEGER
@@ -116,7 +98,7 @@ total_tokens      INTEGER
 cost_usd          DOUBLE
 latency_ms        INTEGER
 created_at        TIMESTAMP`} />
-        <p className="text-sm font-semibold text-text-primary mb-2 mt-6">ide_context</p>
+        <p className="text-sm font-semibold text-ink mb-2 mt-6">ide_context</p>
         <CodeBlock code={`context_id        VARCHAR   -- unique context ID
 response_id       VARCHAR   -- FK → llm_responses
 ide_name          VARCHAR   -- cursor | claude_code | windsurf | vscode_continue | zed
@@ -129,10 +111,10 @@ lines_of_context  INTEGER
 has_error_context BOOLEAN
 suggestion_length INTEGER
 created_at        TIMESTAMP`} />
-        <p className="text-text-muted text-sm mt-4">
-          Query with DuckDB directly: <code className="text-text-primary font-mono">duckdb ~/.anysql/ide.duckdb</code>
+        <p className="text-ink-muted text-sm mt-4">
+          Query with DuckDB directly: <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">duckdb ~/.anysql/ide.duckdb</code>
         </p>
       </Section>
-    </div>
+    </PackageLayout>
   )
 }

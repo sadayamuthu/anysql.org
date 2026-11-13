@@ -1,4 +1,5 @@
-import { HashRouter, Routes, Route } from 'react-router-dom'
+import { useEffect } from 'react'
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home    from './pages/Home'
@@ -10,23 +11,44 @@ import Queries from './pages/Queries'
 import Schema  from './pages/Schema'
 import Cli     from './pages/Cli'
 
+function ScrollManager() {
+  const { pathname, hash } = useLocation()
+  useEffect(() => {
+    if (hash) {
+      document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else {
+      window.scrollTo(0, 0)
+    }
+  }, [pathname, hash])
+  return null
+}
+
+export function AppRoutes() {
+  return (
+    <>
+      <ScrollManager />
+      <Routes>
+        <Route path="/"        element={<Home />} />
+        <Route path="/sdk"     element={<Sdk />} />
+        <Route path="/server"  element={<Server />} />
+        <Route path="/ui"      element={<Ui />} />
+        <Route path="/proxy"   element={<Proxy />} />
+        <Route path="/queries" element={<Queries />} />
+        <Route path="/schema"  element={<Schema />} />
+        <Route path="/cli"     element={<Cli />} />
+        <Route path="*"        element={<Home />} />
+      </Routes>
+    </>
+  )
+}
+
 export default function App() {
   return (
     <HashRouter>
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-1">
-          <Routes>
-            <Route path="/"        element={<Home />} />
-            <Route path="/sdk"     element={<Sdk />} />
-            <Route path="/server"  element={<Server />} />
-            <Route path="/ui"      element={<Ui />} />
-            <Route path="/proxy"   element={<Proxy />} />
-            <Route path="/queries" element={<Queries />} />
-            <Route path="/schema"  element={<Schema />} />
-            <Route path="/cli"     element={<Cli />} />
-            <Route path="*"        element={<Home />} />
-          </Routes>
+          <AppRoutes />
         </main>
         <Footer />
       </div>

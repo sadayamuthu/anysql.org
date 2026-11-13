@@ -1,46 +1,25 @@
 import { Link } from 'react-router-dom'
-
-const FOOTER_LINKS = [
-  { label: 'SDK',     to: '/sdk' },
-  { label: 'Queries', to: '/queries' },
-  { label: 'Schema',  to: '/schema' },
-  { label: 'CLI',     to: '/cli' },
-]
+import { GITHUB, PACKAGES } from '../data/packages'
 
 export default function Footer() {
   return (
-    <footer className="border-t border-subtle bg-surface mt-auto">
-      <div className="max-w-5xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="text-sm text-text-muted">
-          © {new Date().getFullYear()} · anySQL is Apache 2.0 ·{' '}
-          <a
-            href="https://openastra.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-accent-cyan transition-colors duration-200"
-          >
-            by OpenAstra
-          </a>
+    <footer className="mt-auto">
+      <div className="max-w-page mx-auto px-4 sm:px-6 py-8 border-t-2 border-ink flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm text-ink-muted">
+        <p>
+          <span className="font-serif text-ink">any<span className="text-acc">SQL</span></span> · An{' '}
+          <a href="https://openastra.org" target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:text-ink">OpenAstra</a>{' '}
+          framework · IV. Observability
         </p>
-        <div className="flex items-center gap-6">
-          {FOOTER_LINKS.map(({ label, to }) => (
-            <Link
-              key={to}
-              to={to}
-              className="text-sm text-text-muted hover:text-accent-cyan transition-colors duration-200"
-            >
-              {label}
-            </Link>
+        <div className="flex flex-wrap gap-x-5 gap-y-1">
+          {PACKAGES.map((p) => (
+            <Link key={p.to} to={p.to} className="hover:text-ink">{p.short}</Link>
           ))}
-          <a
-            href="https://github.com/sadayamuthu/anysql"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-text-muted hover:text-accent-cyan transition-colors duration-200"
-          >
-            GitHub ↗
-          </a>
+          <Link to="/schema" className="hover:text-ink">Schema</Link>
+          <Link to="/queries" className="hover:text-ink">Queries</Link>
+          <Link to="/cli" className="hover:text-ink">CLI</Link>
+          <a href={GITHUB} target="_blank" rel="noreferrer" className="hover:text-ink">GitHub ↗</a>
         </div>
+        <p>© {new Date().getFullYear()} · Apache 2.0</p>
       </div>
     </footer>
   )
