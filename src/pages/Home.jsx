@@ -120,7 +120,7 @@ export default function Home() {
       </Section>
 
       <Section id="quick-start" label="Get started" title="Up and running in 3 steps.">
-        <ol className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <ol className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {STEPS.map((s, i) => (
             <li key={s.label} className="border border-dashed border-ink/30 rounded-sm p-4 min-w-0">
               <p className="font-mono text-xs text-acc">{i + 1}</p>

@@ -46,7 +46,10 @@ export default function Navbar() {
               onKeyDown={(e) => e.key === 'Escape' && setOpen(false)}
               className={`text-sm pb-0.5 border-b inline-flex items-center gap-1 transition-colors ${packagesActive ? 'text-ink border-acc' : 'text-ink-muted border-transparent hover:text-ink'}`}
             >
-              Packages <span aria-hidden="true" className="text-[10px]">{open ? '▴' : '▾'}</span>
+              Packages
+              <svg aria-hidden="true" viewBox="0 0 12 12" className={`w-2.5 h-2.5 transition-transform ${open ? 'rotate-180' : ''}`}>
+                <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              </svg>
             </button>
             {open && (
               <ul className="absolute left-0 sm:left-auto sm:right-0 top-full mt-2 w-64 bg-card border border-rule rounded-sm shadow-sm py-1 z-50">
