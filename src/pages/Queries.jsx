@@ -1,3 +1,6 @@
+import DocsLayout from '../components/DocsLayout'
+import { CopyButton } from '../components/ui'
+
 const QUERY_GROUPS = [
   {
     id: 'UC1',
@@ -123,30 +126,29 @@ ORDER BY avg_similarity DESC`,
 
 export default function Queries() {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-16">
-      <h1 className="text-4xl font-bold text-text-primary mb-4">Query Library</h1>
-      <p className="text-text-muted mb-12 text-lg">
-        Canonical SQL queries for all 5 use cases. Copy and adapt for your setup.
-      </p>
-      <div className="space-y-14">
-        {QUERY_GROUPS.map((group) => (
-          <section key={group.id}>
-            <h2 className="text-xl font-semibold text-text-primary mb-6 pb-2 border-b border-subtle">
-              {group.title}
-            </h2>
-            <div className="space-y-6">
-              {group.queries.map((q) => (
-                <div key={q.title} className="bg-surface border border-subtle rounded-xl p-6">
-                  <p className="text-sm font-medium text-text-primary mb-3">{q.title}</p>
-                  <pre className="bg-space rounded-lg p-4 overflow-x-auto text-sm leading-relaxed">
-                    <code className="text-accent-cyan">{q.sql}</code>
-                  </pre>
+    <DocsLayout
+      title="Query Library"
+      lede="Canonical SQL queries for all 5 use cases. Copy and adapt for your setup."
+      toc={QUERY_GROUPS.map((g) => ({ id: g.id.toLowerCase(), label: g.title }))}
+    >
+      {QUERY_GROUPS.map((group) => (
+        <section key={group.id} id={group.id.toLowerCase()} className="py-8 border-t border-rule scroll-mt-24">
+          <h2 className="font-serif text-2xl sm:text-3xl mb-6">{group.title}</h2>
+          <div className="flex flex-col gap-6">
+            {group.queries.map((q) => (
+              <div key={q.title}>
+                <div className="flex items-center justify-between gap-4 mb-2">
+                  <h3 className="font-medium">{q.title}</h3>
+                  <CopyButton text={q.sql} label={`Copy SQL: ${q.title}`} />
                 </div>
-              ))}
-            </div>
-          </section>
-        ))}
-      </div>
-    </div>
+                <pre className="bg-ink text-[#EDE7DA] rounded-sm p-4 overflow-x-auto font-mono text-[13px] leading-relaxed [font-variant-ligatures:none]">
+                  <code>{q.sql}</code>
+                </pre>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))}
+    </DocsLayout>
   )
 }

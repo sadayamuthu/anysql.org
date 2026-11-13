@@ -1,3 +1,7 @@
+import DocsLayout from '../components/DocsLayout'
+
+const anchor = (name) => name.replace('.', '-').replace('_', '-')
+
 const TABLES = [
   {
     name: 'llm.responses',
@@ -101,49 +105,48 @@ const TABLES = [
 
 export default function Schema() {
   return (
-    <div className="max-w-5xl mx-auto px-6 py-16">
-      <h1 className="text-4xl font-bold text-text-primary mb-4">Schema</h1>
-      <p className="text-text-muted mb-12 text-lg">
-        6 canonical PyArrow tables. All adapters and tracers normalize to these schemas.
-        Use underscored names in SQL (e.g. <code className="text-text-primary font-mono">llm_responses</code>).
-      </p>
-      <div className="space-y-12">
+    <DocsLayout
+      title="Schema"
+      lede={<>6 canonical PyArrow tables. All adapters and tracers normalize to these schemas. Use underscored names in SQL (e.g. <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">llm_responses</code>).</>}
+      toc={TABLES.map((t) => ({ id: anchor(t.name), label: t.name }))}
+    >
+      <div className="flex flex-col">
         {TABLES.map((table) => (
-          <div key={table.name} className="bg-surface border border-subtle rounded-xl p-6">
-            <div className="flex items-start justify-between mb-2">
-              <h2 className="text-xl font-semibold text-accent-cyan font-mono">{table.name}</h2>
+          <section key={table.name} id={anchor(table.name)} className="py-8 border-t border-rule scroll-mt-24">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <h2 className="font-mono text-xl text-acc">{table.name}</h2>
               <div className="flex gap-2">
                 {table.useCases.map((uc) => (
-                  <span key={uc} className="text-xs px-2 py-0.5 rounded-full border border-subtle text-text-muted font-mono">{uc}</span>
+                  <span key={uc} className="text-[11px] px-2 py-0.5 rounded-full border border-ink/25 font-mono text-ink-muted">{uc}</span>
                 ))}
               </div>
             </div>
-            <p className="text-text-muted text-sm mb-4">{table.description}</p>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+            <p className="text-ink-muted text-sm mt-1">{table.description} <span className="font-mono text-xs">SQL: {table.sqlName}</span></p>
+            <div className="overflow-x-auto mt-4">
+              <table className="w-full text-sm min-w-[32rem]">
                 <thead>
-                  <tr className="border-b border-subtle text-left">
-                    <th className="pb-2 pr-6 text-text-muted font-medium">Field</th>
-                    <th className="pb-2 pr-6 text-text-muted font-medium">Type</th>
-                    <th className="pb-2 pr-6 text-text-muted font-medium">Nullable</th>
-                    <th className="pb-2 text-text-muted font-medium">Notes</th>
+                  <tr className="border-b-2 border-ink text-left">
+                    <th className="pb-2 pr-6 text-[11px] tracking-[0.12em] uppercase text-ink-muted font-medium">Field</th>
+                    <th className="pb-2 pr-6 text-[11px] tracking-[0.12em] uppercase text-ink-muted font-medium">Type</th>
+                    <th className="pb-2 pr-6 text-[11px] tracking-[0.12em] uppercase text-ink-muted font-medium">Nullable</th>
+                    <th className="pb-2 text-[11px] tracking-[0.12em] uppercase text-ink-muted font-medium">Notes</th>
                   </tr>
                 </thead>
                 <tbody>
                   {table.fields.map((f) => (
-                    <tr key={f.name} className="border-b border-subtle/50 last:border-0">
-                      <td className="py-2 pr-6 font-mono text-text-primary">{f.name}</td>
-                      <td className="py-2 pr-6 font-mono text-accent-blue text-xs">{f.type}</td>
-                      <td className="py-2 pr-6 text-text-muted">{f.nullable ? 'yes' : 'no'}</td>
-                      <td className="py-2 text-text-muted text-xs">{f.note || ''}</td>
+                    <tr key={f.name} className="border-b border-rule last:border-0">
+                      <td className="py-2 pr-6 font-mono">{f.name}</td>
+                      <td className="py-2 pr-6 font-mono text-acc text-xs">{f.type}</td>
+                      <td className="py-2 pr-6 text-ink-muted">{f.nullable ? 'yes' : 'no'}</td>
+                      <td className="py-2 text-ink-muted text-xs">{f.note || ''}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          </div>
+          </section>
         ))}
       </div>
-    </div>
+    </DocsLayout>
   )
 }
