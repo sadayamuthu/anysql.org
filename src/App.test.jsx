@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import { render, screen, fireEvent } from '@testing-library/react'
+import { MemoryRouter, Link } from 'react-router-dom'
 import { AppRoutes } from './App'
 
 const renderAt = (path) => render(<MemoryRouter initialEntries={[path]}><AppRoutes /></MemoryRouter>)
@@ -21,5 +21,13 @@ describe('routes', () => {
   it('renders Home for unknown routes', () => {
     renderAt('/nope')
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('SQL analytics for AI systems')
+  })
+
+  it('scrolls to top again when the current page link is clicked', () => {
+    render(<MemoryRouter initialEntries={['/sdk']}><Link to="/sdk">again</Link><AppRoutes /></MemoryRouter>)
+    window.scrollTo.mockClear?.()
+    const spy = vi.spyOn(window, 'scrollTo')
+    fireEvent.click(screen.getByRole('link', { name: 'again' }))
+    expect(spy).toHaveBeenCalledWith(0, 0)
   })
 })

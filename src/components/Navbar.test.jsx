@@ -32,6 +32,33 @@ describe('Navbar', () => {
     expect(btn).toHaveAttribute('aria-expanded', 'false')
   })
 
+  it('closes the Packages menu on Escape from a menu link and returns focus', () => {
+    renderNav()
+    const btn = screen.getByRole('button', { name: /Packages/ })
+    fireEvent.click(btn)
+    const link = screen.getByRole('link', { name: /anysql-proxy/ })
+    link.focus()
+    fireEvent.keyDown(link, { key: 'Escape' })
+    expect(btn).toHaveAttribute('aria-expanded', 'false')
+    expect(btn).toHaveFocus()
+  })
+
+  it('closes the Packages menu when the current page is chosen', () => {
+    renderNav('/proxy')
+    const btn = screen.getByRole('button', { name: /Packages/ })
+    fireEvent.click(btn)
+    fireEvent.click(screen.getByRole('link', { name: /anysql-proxy/ }))
+    expect(btn).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  it('is a disclosure, not a menu: no aria-haspopup, aria-controls points at the list', () => {
+    renderNav()
+    const btn = screen.getByRole('button', { name: /Packages/ })
+    expect(btn).not.toHaveAttribute('aria-haspopup')
+    fireEvent.click(btn)
+    expect(document.getElementById(btn.getAttribute('aria-controls'))).not.toBeNull()
+  })
+
   it('has docs, cite and GitHub links', () => {
     renderNav()
     expect(screen.getByRole('link', { name: 'Schema' })).toHaveAttribute('href', '/schema')

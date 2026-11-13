@@ -1,5 +1,5 @@
 import PackageLayout from '../components/PackageLayout'
-import { CodeBlock, Section } from '../components/ui'
+import { CodeBlock, Section, InlineCode } from '../components/ui'
 
 const CLI_COMMANDS = [
   { cmd: 'anysql-proxy start',         desc: 'Start the proxy on localhost:4242' },
@@ -25,7 +25,7 @@ export default function Proxy() {
 
       <Section title="How it works">
         <p className="text-ink-muted mb-4 leading-relaxed">
-          The proxy runs on <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">localhost:4242</code>. Configure your IDE to point its LLM base URL there. Every request is forwarded to the real provider with zero added latency — and logged non-blocking to <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">~/.anysql/ide.duckdb</code>.
+          The proxy runs on <InlineCode>localhost:4242</InlineCode>. Configure your IDE to point its LLM base URL there. Every request is forwarded to the real provider with zero added latency — and logged non-blocking to <InlineCode>~/.anysql/ide.duckdb</InlineCode>.
         </p>
         <CodeBlock code={`IDE → POST http://localhost:4242/v1/chat/completions
           ↓
@@ -87,7 +87,7 @@ anysql-proxy setup vscode        # VS Code + Continue: config.json`} />
 
       <Section title="Schema">
         <p className="text-ink-muted mb-4">
-          Two tables written to <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">~/.anysql/ide.duckdb</code>:
+          Two tables written to <InlineCode>~/.anysql/ide.duckdb</InlineCode>:
         </p>
         <p className="text-sm font-semibold text-ink mb-2">llm_responses</p>
         <CodeBlock code={`response_id       VARCHAR   -- unique request ID
@@ -112,7 +112,7 @@ has_error_context BOOLEAN
 suggestion_length INTEGER
 created_at        TIMESTAMP`} />
         <p className="text-ink-muted text-sm mt-4">
-          Query with DuckDB directly: <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">duckdb ~/.anysql/ide.duckdb</code>
+          Query with DuckDB directly: <InlineCode>duckdb ~/.anysql/ide.duckdb</InlineCode>
         </p>
       </Section>
     </PackageLayout>

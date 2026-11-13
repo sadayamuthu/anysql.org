@@ -1,6 +1,7 @@
+import { InlineCode } from '../components/ui'
 import DocsLayout from '../components/DocsLayout'
 
-const anchor = (name) => name.replace('.', '-').replace('_', '-')
+const anchor = (name) => name.replace(/[._]/g, '-')
 
 const TABLES = [
   {
@@ -107,7 +108,7 @@ export default function Schema() {
   return (
     <DocsLayout
       title="Schema"
-      lede={<>6 canonical PyArrow tables. All adapters and tracers normalize to these schemas. Use underscored names in SQL (e.g. <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">llm_responses</code>).</>}
+      lede={<>6 canonical PyArrow tables. All adapters and tracers normalize to these schemas. Use underscored names in SQL (e.g. <InlineCode>llm_responses</InlineCode>).</>}
       toc={TABLES.map((t) => ({ id: anchor(t.name), label: t.name }))}
     >
       <div className="flex flex-col">
