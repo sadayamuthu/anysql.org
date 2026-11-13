@@ -1,81 +1,73 @@
-import { Link, useLocation } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { GITHUB, PACKAGES } from '../data/packages'
 
-const DOC_LINKS = [
-  { label: 'Schema',  to: '/schema' },
-  { label: 'Queries', to: '/queries' },
-  { label: 'CLI',     to: '/cli' },
+const DOCS = [
+  { to: '/schema', label: 'Schema' },
+  { to: '/queries', label: 'Queries' },
+  { to: '/cli', label: 'CLI' },
 ]
+
+const linkClass = ({ isActive }) =>
+  `text-sm pb-0.5 border-b transition-colors ${isActive ? 'text-ink border-acc' : 'text-ink-muted border-transparent hover:text-ink'}`
 
 export default function Navbar() {
   const { pathname } = useLocation()
-  const docsActive = ['/schema', '/queries', '/cli'].includes(pathname)
+  const [open, setOpen] = useState(false)
+  const menuRef = useRef(null)
+  const packagesActive = PACKAGES.some((p) => p.to === pathname)
+
+  useEffect(() => setOpen(false), [pathname])
+  useEffect(() => {
+    if (!open) return
+    const onDown = (e) => { if (!menuRef.current?.contains(e.target)) setOpen(false) }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [open])
 
   return (
-    <nav className="sticky top-0 z-50 bg-surface border-b border-subtle">
-      <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link to="/" className="text-lg font-semibold text-text-primary hover:text-accent-cyan transition-colors duration-200">
-          anySQL
-        </Link>
-        <div className="flex items-center gap-8">
-          {[
-            { label: 'SDK',    to: '/sdk' },
-            { label: 'Proxy',  to: '/proxy' },
-            { label: 'Server', to: '/server' },
-            { label: 'UI',     to: '/ui' },
-          ].map(({ label, to }) => (
-            <Link
-              key={to}
-              to={to}
-              className={`text-sm transition-colors duration-200 ${
-                pathname === to ? 'text-accent-cyan' : 'text-text-muted hover:text-text-primary'
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
-
-          {/* Docs dropdown */}
-          <div className="relative group">
-            <button
-              aria-label="Documentation"
-              aria-haspopup="true"
-              className={`text-sm transition-colors duration-200 flex items-center gap-1 ${
-                docsActive ? 'text-accent-cyan' : 'text-text-muted hover:text-text-primary'
-              }`}
-            >
-              Docs
-              <svg className="w-3 h-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div className="absolute right-0 top-full pt-2 hidden group-hover:block z-50">
-              <div className="bg-surface border border-subtle rounded-lg py-1 min-w-[120px] shadow-lg">
-                {DOC_LINKS.map(({ label, to }) => (
-                  <Link
-                    key={to}
-                    to={to}
-                    className={`block px-4 py-2 text-sm transition-colors duration-200 ${
-                      pathname === to ? 'text-accent-cyan' : 'text-text-muted hover:text-text-primary'
-                    }`}
-                  >
-                    {label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <a
-            href="https://github.com/sadayamuthu/anysql"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-text-muted hover:text-text-primary transition-colors duration-200"
-            aria-label="GitHub repository"
-          >
-            GitHub ↗
+    <header className="bg-paper/95 backdrop-blur sticky top-0 z-50">
+      <nav className="max-w-page mx-auto px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-b-2 border-ink">
+        <div className="flex flex-wrap items-baseline gap-x-3">
+          <Link to="/" aria-label="anySQL" className="font-serif text-xl tracking-tight">
+            any<span className="text-acc">SQL</span>
+          </Link>
+          <a href="https://openastra.org" target="_blank" rel="noreferrer" className="text-xs text-ink-muted hover:text-ink">
+            An OpenAstra framework ↗
           </a>
         </div>
-      </div>
-    </nav>
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
+          <div className="relative" ref={menuRef}>
+            <button
+              type="button"
+              aria-expanded={open}
+              aria-haspopup="true"
+              onClick={() => setOpen((o) => !o)}
+              onKeyDown={(e) => e.key === 'Escape' && setOpen(false)}
+              className={`text-sm pb-0.5 border-b inline-flex items-center gap-1 transition-colors ${packagesActive ? 'text-ink border-acc' : 'text-ink-muted border-transparent hover:text-ink'}`}
+            >
+              Packages <span aria-hidden="true" className="text-[10px]">{open ? '▴' : '▾'}</span>
+            </button>
+            {open && (
+              <ul className="absolute left-0 sm:left-auto sm:right-0 top-full mt-2 w-64 bg-card border border-rule rounded-sm shadow-sm py-1 z-50">
+                {PACKAGES.map((p) => (
+                  <li key={p.to}>
+                    <Link to={p.to} className="flex items-baseline gap-3 px-4 py-2 hover:bg-paper">
+                      <span className="font-mono text-xs text-ink-muted">{String(p.number).padStart(2, '0')}</span>
+                      <span className="font-mono text-sm">{p.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          {DOCS.map((d) => (
+            <NavLink key={d.to} to={d.to} className={linkClass}>{d.label}</NavLink>
+          ))}
+          <Link to={{ pathname: '/', hash: '#cite' }} className="text-sm text-ink-muted hover:text-ink">Cite</Link>
+          <a href={GITHUB} target="_blank" rel="noreferrer" className="text-sm text-ink-muted hover:text-ink">GitHub ↗</a>
+        </div>
+      </nav>
+    </header>
   )
 }
