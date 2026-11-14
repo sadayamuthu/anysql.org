@@ -1,5 +1,5 @@
 import PackageLayout from '../components/PackageLayout'
-import { CodeBlock, Section } from '../components/ui'
+import { CodeBlock, Section, InlineCode } from '../components/ui'
 
 export default function Sdk() {
   return (
@@ -109,12 +109,12 @@ df = db.query("""
   ORDER BY avg_score DESC
 """)`} />
         <p className="text-ink-muted text-sm">
-          Table names in SQL use underscores: <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">llm_responses</code>,{' '}
-          <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">eval_results</code>,{' '}
-          <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">pipeline_runs</code>,{' '}
-          <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">agent_tool_calls</code>,{' '}
-          <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">agent_trace</code>,{' '}
-          <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">rag_chunks</code>.
+          Table names in SQL use underscores: <InlineCode>llm_responses</InlineCode>,{' '}
+          <InlineCode>eval_results</InlineCode>,{' '}
+          <InlineCode>pipeline_runs</InlineCode>,{' '}
+          <InlineCode>agent_tool_calls</InlineCode>,{' '}
+          <InlineCode>agent_trace</InlineCode>,{' '}
+          <InlineCode>rag_chunks</InlineCode>.
         </p>
       </Section>
     </PackageLayout>

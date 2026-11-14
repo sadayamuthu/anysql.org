@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { GITHUB, PACKAGES } from '../data/packages'
 
@@ -15,6 +15,8 @@ export default function Navbar() {
   const { pathname } = useLocation()
   const [open, setOpen] = useState(false)
   const menuRef = useRef(null)
+  const buttonRef = useRef(null)
+  const listId = useId()
   const packagesActive = PACKAGES.some((p) => p.to === pathname)
 
   useEffect(() => setOpen(false), [pathname])
@@ -37,13 +39,22 @@ export default function Navbar() {
           </a>
         </div>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
-          <div className="relative" ref={menuRef}>
+          <div
+            className="relative"
+            ref={menuRef}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape' && open) {
+                setOpen(false)
+                buttonRef.current?.focus()
+              }
+            }}
+          >
             <button
+              ref={buttonRef}
               type="button"
               aria-expanded={open}
-              aria-haspopup="true"
+              aria-controls={listId}
               onClick={() => setOpen((o) => !o)}
-              onKeyDown={(e) => e.key === 'Escape' && setOpen(false)}
               className={`text-sm pb-0.5 border-b inline-flex items-center gap-1 transition-colors ${packagesActive ? 'text-ink border-acc' : 'text-ink-muted border-transparent hover:text-ink'}`}
             >
               Packages
@@ -52,10 +63,10 @@ export default function Navbar() {
               </svg>
             </button>
             {open && (
-              <ul className="absolute left-0 sm:left-auto sm:right-0 top-full mt-2 w-64 bg-card border border-rule rounded-sm shadow-sm py-1 z-50">
+              <ul id={listId} className="absolute left-0 sm:left-auto sm:right-0 top-full mt-2 w-64 bg-card border border-rule rounded-sm shadow-sm py-1 z-50">
                 {PACKAGES.map((p) => (
                   <li key={p.to}>
-                    <Link to={p.to} className="flex items-baseline gap-3 px-4 py-2 hover:bg-paper">
+                    <Link to={p.to} onClick={() => setOpen(false)} className="flex items-baseline gap-3 px-4 py-2 hover:bg-paper">
                       <span className="font-mono text-xs text-ink-muted">{String(p.number).padStart(2, '0')}</span>
                       <span className="font-mono text-sm">{p.name}</span>
                     </Link>

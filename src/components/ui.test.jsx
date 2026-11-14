@@ -28,3 +28,15 @@ describe('CodeBlock', () => {
     expect(screen.getByText('pip install anysql-sdk')).toBeInTheDocument()
   })
 })
+
+describe('inline code', () => {
+  it('pages use the shared InlineCode style instead of copies of its classes', async () => {
+    const fs = await import('node:fs')
+    const path = await import('node:path')
+    const dir = path.resolve(__dirname, '../pages')
+    const offenders = fs.readdirSync(dir)
+      .filter((f) => f.endsWith('.jsx') && !f.includes('.test.'))
+      .filter((f) => fs.readFileSync(path.join(dir, f), 'utf8').includes('px-1 py-0.5 rounded-sm bg-card border border-rule'))
+    expect(offenders).toEqual([])
+  })
+})

@@ -1,11 +1,11 @@
 import PackageLayout from '../components/PackageLayout'
-import { CodeBlock, Section } from '../components/ui'
+import { CodeBlock, Section, InlineCode } from '../components/ui'
 
 export default function Ui() {
   return (
     <PackageLayout
       to="/ui"
-      lede={<>Monaco SQL editor and pre-built dashboards at <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">localhost:4243</code>.</>}
+      lede={<>Monaco SQL editor and pre-built dashboards at <InlineCode>localhost:4243</InlineCode>.</>}
       note="This package is not yet released. Details below reflect the planned design."
     >
 

@@ -54,8 +54,13 @@ describe('docs pages', () => {
     const toc = within(screen.getByRole('navigation', { name: 'On this page' }))
     ;['llm.responses', 'eval.results', 'pipeline.runs', 'agent.tool_calls', 'agent.trace', 'rag.chunks'].forEach((t) => {
       expect(screen.getByRole('heading', { name: t })).toBeInTheDocument()
-      expect(toc.getByRole('link', { name: t })).toHaveAttribute('href', `#${t.replace('.', '-').replace('_', '-')}`)
+      expect(toc.getByRole('link', { name: t })).toHaveAttribute('href', `#${t.replace(/[._]/g, '-')}`)
     })
+  })
+
+  it('Schema anchors replace every dot and underscore', () => {
+    r(Schema)
+    expect(document.getElementById('agent-tool-calls')).not.toBeNull()
   })
 
   it('Queries has a Copy button per query that copies the SQL', async () => {

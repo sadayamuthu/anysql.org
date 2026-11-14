@@ -1,11 +1,11 @@
 import DocsLayout from '../components/DocsLayout'
-import { CodeBlock, Section } from '../components/ui'
+import { CodeBlock, Section, InlineCode } from '../components/ui'
 
 export default function Cli() {
   return (
     <DocsLayout
       title="CLI Reference"
-      lede={<>The <code className="font-mono text-[0.9em] px-1 py-0.5 rounded-sm bg-card border border-rule">anysql</code> CLI lets you query and inspect your telemetry database from the terminal.</>}
+      lede={<>The <InlineCode>anysql</InlineCode> CLI lets you query and inspect your telemetry database from the terminal.</>}
       toc={[{ id: 'anysql-query', label: 'anysql query' }, { id: 'anysql-stats', label: 'anysql stats' }]}
     >
 
