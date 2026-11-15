@@ -25,14 +25,14 @@ export default function Research() {
             {p.findings.map((f) => <li key={f}>{f}</li>)}
           </ul>
 
-          <h3 className="font-serif text-xl mt-6 mb-2">Artefacts</h3>
+          <h3 className="font-serif text-xl mt-6 mb-2">Artifacts</h3>
           <p className="text-ink-muted mb-4">
             Evaluation loader, detection queries, frozen query hashes and raw results, tag{' '}
             <InlineCode>{p.artifactsTag}</InlineCode>. The provenance change is anySQL{' '}
             <InlineCode>{p.anysqlVersion}</InlineCode> (commit <InlineCode>{p.anysqlCommit}</InlineCode>).
           </p>
           <div className="flex flex-wrap gap-3">
-            <Button href={p.artifacts} variant="solid">Artefacts on GitHub</Button>
+            <Button href={p.artifacts} variant="solid">Artifacts on GitHub</Button>
             <Button href={`${GITHUB}/commit/${p.anysqlCommit}`}>anySQL commit {p.anysqlCommit}</Button>
           </div>
 

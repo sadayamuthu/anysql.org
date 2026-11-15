@@ -16,9 +16,9 @@ describe('Research page', () => {
     })
   })
 
-  it('links the artefact repository and the anySQL commit', () => {
+  it('links the artifact repository and the anySQL commit', () => {
     r()
-    expect(screen.getByRole('link', { name: /Artefacts on GitHub/ })).toHaveAttribute('href', 'https://github.com/sadayamuthu/untraced-by-design')
+    expect(screen.getByRole('link', { name: /Artifacts on GitHub/ })).toHaveAttribute('href', 'https://github.com/sadayamuthu/untraced-by-design')
     expect(screen.getByRole('link', { name: /anySQL commit fe92f1a/ })).toHaveAttribute('href', expect.stringMatching(/\/commit\/fe92f1a$/))
   })
 
