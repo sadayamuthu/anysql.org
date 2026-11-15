@@ -6,6 +6,7 @@ const DOCS = [
   { to: '/schema', label: 'Schema' },
   { to: '/queries', label: 'Queries' },
   { to: '/cli', label: 'CLI' },
+  { to: '/research', label: 'Research' },
 ]
 
 const linkClass = ({ isActive }) =>

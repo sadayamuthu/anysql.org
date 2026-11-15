@@ -10,6 +10,7 @@ import Proxy   from './pages/Proxy'
 import Queries from './pages/Queries'
 import Schema  from './pages/Schema'
 import Cli     from './pages/Cli'
+import Research from './pages/Research'
 
 function ScrollManager() {
   const { pathname, hash, key } = useLocation()
@@ -36,6 +37,7 @@ export function AppRoutes() {
         <Route path="/queries" element={<Queries />} />
         <Route path="/schema"  element={<Schema />} />
         <Route path="/cli"     element={<Cli />} />
+        <Route path="/research" element={<Research />} />
         <Route path="*"        element={<Home />} />
       </Routes>
     </>

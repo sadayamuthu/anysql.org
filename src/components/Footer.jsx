@@ -17,6 +17,7 @@ export default function Footer() {
           <Link to="/schema" className="hover:text-ink">Schema</Link>
           <Link to="/queries" className="hover:text-ink">Queries</Link>
           <Link to="/cli" className="hover:text-ink">CLI</Link>
+          <Link to="/research" className="hover:text-ink">Research</Link>
           <a href={GITHUB} target="_blank" rel="noreferrer" className="hover:text-ink">GitHub ↗</a>
         </div>
         <p>© {new Date().getFullYear()} · Apache 2.0</p>
